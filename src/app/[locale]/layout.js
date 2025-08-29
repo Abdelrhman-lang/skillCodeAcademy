@@ -1,4 +1,3 @@
-
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Directions, Languages } from "../../constants/constants";
@@ -11,14 +10,12 @@ import Cart from "./_component/cart/Cart";
 import CartButtonProvider from "../../context/CartButtonContext";
 import OrderProvider from "../../context/OrderContext";
 import Footer from "../../components/footer/Footer";
-import DashboardProvider from "../../context/DashboardContext";
-import AdminProvider from "../../context/AdminContext";
 import Provider from "../../components/provider/Provider";
 import UserProvider from "../../context/UserContext";
 
 const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"]
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata = {
@@ -27,35 +24,28 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children, params }) {
-  const locale = await  params.locale
+  const locale = await params.locale;
   return (
-    <html lang={locale} dir={locale === Languages.ARABIC ? Directions.RTL : Directions.LTR}>
-      <body
-        className={` ${roboto.className} antialiased`}
-      >
+    <html
+      lang={locale}
+      dir={locale === Languages.ARABIC ? Directions.RTL : Directions.LTR}
+    >
+      <body className={` ${roboto.className} antialiased`}>
         <ClerkProvider>
           <ProductProvider>
-              <CartProvider>
+            <CartProvider>
               <OrderProvider>
-                <DashboardProvider>
-                  <AdminProvider>
-                    <UserProvider>
-                    <CartButtonProvider>
-                      <HeaderWraper locale={locale} />
-                      <Cart />
-                    </CartButtonProvider>
-                    <Provider>
-                      {children}
-                    </Provider>
+                <UserProvider>
+                  <CartButtonProvider>
+                    <HeaderWraper locale={locale} />
+                    <Cart />
+                  </CartButtonProvider>
+                  <Provider>{children}</Provider>
                   <Footer />
-                  </UserProvider>
-                 
-                  </AdminProvider>
-                </DashboardProvider>
-                </OrderProvider>
-              </CartProvider>
-            </ProductProvider>
-          
+                </UserProvider>
+              </OrderProvider>
+            </CartProvider>
+          </ProductProvider>
         </ClerkProvider>
       </body>
     </html>
