@@ -1,0 +1,127 @@
+{
+    "home" :{
+        "hero": {
+            "title": "all your digital prodcts",
+            "subTitle" : "is one click away",
+            "description" : "start exploring state of the art assets now!",
+            "getStarted": "get started",
+            "learnMore": "learn more"
+        },
+        "sectionHeader" : {
+        "title" : "our latest products"
+    },
+    "categoryBtns" : {
+        "all" : "All",
+        "tech" : "Tech",
+        "markiting": "Markiting",
+        "general" : "General"
+    }, 
+    "coursesBtn" : "View all Courses"
+    },
+    "navbar": {
+        "explore" : "Explore",
+        "courses": "Courses",
+        "aboutUs" : "About Us",
+        "contactUs" : "Contact us",
+        "login" : "login"
+
+    },
+    
+    "about" : {
+        "title": "your gateway to mastering high-demand skills",
+        "description" : "Skill Code Academy is an online learning platform that helps learners develop the skills they need to succeed in today’s digital world.Our mission is to make high-quality education accessible to everyone, everywhere.",
+        "btn" : "Explore Our Courses",
+        "ourFeatures" : "Our Features",
+        "card__1" : {
+            "title" : "Expert Instructors",
+            "description" : "Learn from industry professionals with real-world experience in work field."
+            
+        },
+        "card__2" : {
+            "title" : "Flexible Learning",
+            "description" : "Study anytime, anywhere at your own pace with lifetime access to courses"
+            
+        },
+        "card__3" : {
+            "title" : "Career-Oriented",
+            "description" : "Build practical skills that help you grow your career or land your first job"
+            
+        }
+    },
+    "explore" : {
+        "title" : "Explore Courses",
+        "placeholder": "Search for Course.....",
+        "description" : "Discover new skills and start learning today.",
+        "of" : "of"
+    }, 
+    "contact" : {
+        "form": {
+            "subTitle" : "Contact With Us",
+            "title" : "We'd love to hear from you! Fill out the form below and our team will get back to you soon.",
+            "inputs" : {
+                "name" : "Name",
+                "email" : "Email",
+                "message" : "Message"
+            },
+            "placeholders" : {
+                "name" : "Your Name",
+                "email" : "you@email.com",
+                "message" : "Type Your Message...."
+            },
+            "btn" : "Send Message"
+        }
+    },
+    
+    "dashboard" : {
+        "sectionHeader" : "Admin Dashboard",
+        "btns" : {
+            "logout" : "Log out",
+            "addCourse" : "Add Course",
+            "addAdmin" : "Add Admin",
+            "editCourse" : "Edit Course",
+            "deleteCourse" : "Delete Course"
+        },
+        "sideMenu" : {
+            "courses" : "Courses",
+            "admins" : "Admins",
+            "orders" : "Orders"
+        }, 
+        "orderInfo" : {
+            "orderId" : "Order Id",
+            "quantity" : "Quantity",
+            "date" : "Date",
+            "view" : "View",
+            "product" : "Product"
+        }
+    },
+    "footer" : {
+        "description" : "Welcome to Skill Code Academy – your gateway to mastering high-demand skills, We offer a wide range of online courses in programming, design, marketing, and more, Whether you're a beginner or looking to advance your career, our expert instructors and hands-on content will help you achieve your goals, Learn at your own pace, anytime, anywhere",
+        "copyRight" : "made by Eng.Abdelrhman Khaled. All rights Reseved"
+    },
+    "userOrders" : {
+        "sectionHeader" : "My Orders",
+        "orderInfo" : {
+            "orderId" : "Order Id",
+            "quantity" : "Quantity",
+            "date" : "Date",
+            "view" : "View",
+            "product" : "Product"
+        }
+    },
+    "cart" : {
+        "viewMyCart" : "View my Cart",
+        "clearCart" : "Clear Cart"
+    },
+    "cartPage" : {
+        "emptyCartTitle" : "Your Cart is Empty Add Some Courses",
+        "viewCoursesBtn" : "View Courses",
+        "cartTitle" : "Your Cart",
+        "categorty" : "Categorty:",
+        "price" : "Price:",
+        "subTotal" : "Subtotal",
+        "theVat" : "Vat",
+        "total": "Total",
+        "createOrderBtn" : "Create Order"
+    }
+    
+}
