@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { CartContext } from "../../../context/CartContext";
 import { OrderContext } from "../../../context/OrderContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Trash2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { buttonVariants } from "../../../components/ui/button";
 import { UserContext } from "../../../context/UserContext";
 import Spinner from "../../../components/ui/Spinner";
 import Swal from "sweetalert2";
+import { useUser } from "@clerk/nextjs";
 
 export default function CartPageClient({
   emptyCartTitle,
@@ -22,54 +23,63 @@ export default function CartPageClient({
   total,
   createOrderBtn,
 }) {
-  const { userCart, deleteFromCart, loading } = useContext(CartContext);
+  const { userCart, deleteFromCart, loading, fetchUserProducts, totalPrice } =
+    useContext(CartContext);
   const { createOrder } = useContext(OrderContext);
-  const { userData } = useContext(UserContext);
-
+  const { userData, fetchUser } = useContext(UserContext);
+  const { user } = useUser();
   const params = useParams();
   const locale = params.locale;
 
-  const totalPrice = userCart.reduce((acc, course) => {
-    return acc + Number(course.productPrice);
-  }, 0);
-  const vat = 10;
-
-  const handleCreateOrder = async () => {
-    if (!userData?.id || userCart.length === 0) {
-      alert("Please make sure you have items in your cart and are logged in");
+  useEffect(() => {
+    if (!user) return;
+    fetchUser(user?.primaryEmailAddress?.emailAddress);
+  }, [user]);
+  useEffect(() => {
+    if (user) {
+      fetchUserProducts(userData?.email);
+    } else {
       return;
     }
+  }, [userData?.email]);
+  const vat = 10;
 
-    try {
-      const items = userCart.map((course) => ({
-        productId: course.productId,
-        price: Number(course.productPrice),
-      }));
+  // const handleCreateOrder = async () => {
+  //   if (!userData?.id || userCart.length === 0) {
+  //     alert("Please make sure you have items in your cart and are logged in");
+  //     return;
+  //   }
 
-      const payload = {
-        userId: userData?.id,
-        items: items,
-      };
+  //   try {
+  //     const items = userCart.map((course) => ({
+  //       productId: course.productId,
+  //       price: Number(course.productPrice),
+  //     }));
 
-      const result = await createOrder(payload);
+  //     const payload = {
+  //       userId: userData?.id,
+  //       items: items,
+  //     };
 
-      if (result.success) {
-        Swal.fire({
-          title: "Thank you!",
-          text: "Your order created successfuly!",
-          icon: "success",
-        });
-      } else {
-        Swal.fire({
-          title: "Oooops!",
-          text: "Faild To Create Your Order!",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error creating order:", error);
-    }
-  };
+  //     const result = await createOrder(payload);
+
+  //     if (result.success) {
+  //       Swal.fire({
+  //         title: "Thank you!",
+  //         text: "Your order created successfuly!",
+  //         icon: "success",
+  //       });
+  //     } else {
+  //       Swal.fire({
+  //         title: "Oooops!",
+  //         text: "Faild To Create Your Order!",
+  //         icon: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error creating order:", error);
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -115,34 +125,34 @@ export default function CartPageClient({
               {userCart.map((course) => {
                 return (
                   <li
-                    key={course.cartId}
+                    key={course.id}
                     className="flex flex-col md:flex-row items-center gap-4"
                   >
                     <Image
                       alt="course-img"
-                      src={course.productImage}
+                      src={course.image}
                       width={250}
                       height={250}
                       className="rounded-lg"
                     />
                     <div>
                       <h3 className="text-lg text-primary font-semibold">
-                        {course.productTitle}
+                        {course.name}
                       </h3>
                       <dl className="mt-0.5 space-y-px text-[14px]">
-                        <div>
+                        {/* <div>
                           <dt className="inline me-2 text-gray-500">
                             {categorty}
                           </dt>
                           <dd className="inline font-semibold">
                             {course.productCategory}
                           </dd>
-                        </div>
+                        </div> */}
 
                         <div>
                           <dt className="inline me-2 text-gray-500">{price}</dt>
                           <dd className="inline text-red-500 font-semibold">
-                            ${course.productPrice}
+                            ${course.price}
                           </dd>
                         </div>
                       </dl>
@@ -151,7 +161,9 @@ export default function CartPageClient({
                     <div className="flex flex-1 items-center justify-end gap-2">
                       <button
                         className="text-gray-600 transition hover:text-red-600 cursor-pointer"
-                        onClick={() => deleteFromCart(course.cartId)}
+                        onClick={() =>
+                          deleteFromCart(course.productId, userData?.email)
+                        }
                       >
                         <Trash2 className="text-sm" />
                       </button>
@@ -191,7 +203,7 @@ export default function CartPageClient({
                     Checkout
                   </button> */}
                   <button
-                    onClick={handleCreateOrder}
+                    onClick={createOrder}
                     className="block rounded-sm bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600 cursor-pointer"
                   >
                     {createOrderBtn}

@@ -2,28 +2,28 @@
 import { useContext, useEffect } from "react";
 import OrdersInfo from "../orders-display/OrdersInfo";
 import { OrderContext } from "../../context/OrderContext";
-import { UserContext } from "../../context/UserContext";
+import { useUser } from "@clerk/nextjs";
 
 export default function UserOrdersDisplay({
   orderId,
-  quantity,
+  status,
   date,
   view,
   locale,
   product,
 }) {
-  const { userOrders, loading, fetchUserOrder } = useContext(OrderContext);
-  const { userData } = useContext(UserContext);
-  if (userData?.id && userOrders.length === 0) {
-    fetchUserOrder(userData.id);
-  }
+  const { userOrders, loading, fetchUserOrders } = useContext(OrderContext);
+  const { user } = useUser();
+  useEffect(() => {
+    fetchUserOrders(user?.primaryEmailAddress?.emailAddress);
+  }, [user]);
   return (
     <section>
       <>
         <OrdersInfo
           orders={userOrders}
           orderId={orderId}
-          quantity={quantity}
+          status={status}
           date={date}
           view={view}
           locale={locale}

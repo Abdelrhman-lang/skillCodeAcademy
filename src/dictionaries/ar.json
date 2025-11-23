@@ -91,7 +91,7 @@
         "sectionHeader" : "طلباتي",
         "orderInfo" : {
             "orderId" : "رقم الطلب",
-            "quantity" : "الكمية",
+            "status" : "الحالة",
             "date" : "التاريخ",
             "view" : "عرض",
             "product" : "منتج"

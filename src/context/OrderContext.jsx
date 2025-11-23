@@ -1,38 +1,46 @@
 "use client";
+import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { CartContext } from "./CartContext";
+import Swal from "sweetalert2";
 
 //create context
 
 export const OrderContext = createContext();
 
 export default function OrderProvider({ children }) {
-  const [orders, setOrders] = useState([]);
   const [userOrders, setUserOrders] = useState([]);
   const [userOrderDetails, setUserOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const createOrder = async (payload) => {
+  const { user } = useUser();
+  const { fetchUserProducts } = useContext(CartContext);
+  const createOrder = async () => {
     try {
-      const res = await axios.post(`/api/create-order`, payload);
-      if (res.status === 200 || res.status === 201) {
-        setOrders((prev) => [...prev, res.data]);
-        return { success: true, data: res.data };
+      const res = await axios.post(`/api/place-order`, {
+        userEmail: user?.primaryEmailAddress?.emailAddress,
+      });
+      if (res.status === 200) {
+        Swal.fire({
+          title: "Thanks to choose us!",
+          text: "Your Order is Created successfully!",
+          icon: "success",
+        });
+        fetchUserProducts(user?.primaryEmailAddress?.emailAddress);
       }
     } catch (err) {
-      console.log("Error creating order:", err);
+      console.log("Error when creating order:", err);
       return { success: false, error: err.message };
     } finally {
       setLoading(false);
     }
   };
-  const fetchUserOrder = async (userId) => {
+  const fetchUserOrders = async (userEmail) => {
     try {
-      const res = await axios.get(`/api/get-orders?userId=${userId}`);
+      const res = await axios.get(`/api/get-orders?userEmail=${userEmail}`);
       if (res.status === 200) {
-        setUserOrders((prev) => [...prev, ...res.data]);
-        console.log(res.data);
+        setUserOrders(res.data);
       }
     } catch (err) {
       console.log(err);
@@ -46,7 +54,6 @@ export default function OrderProvider({ children }) {
       const res = await axios.get(`/api/get-order-details?orderId=${orderId}`);
       if (res.status === 200) {
         setUserOrderDetails(res.data);
-        console.log(res.data);
       }
     } catch (err) {
       console.log(err);
@@ -58,9 +65,8 @@ export default function OrderProvider({ children }) {
     <OrderContext.Provider
       value={{
         createOrder,
-        orders,
         loading,
-        fetchUserOrder,
+        fetchUserOrders,
         userOrders,
         userOrderDetails,
         fetchUserOrdersDetails,

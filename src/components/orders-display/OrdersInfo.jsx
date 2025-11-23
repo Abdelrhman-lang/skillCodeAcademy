@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function OrdersInfo({
   orders,
   orderId,
-  quantity,
+  status,
   date,
   view,
   locale,
@@ -14,7 +14,7 @@ export default function OrdersInfo({
     <>
       <div className="hidden md:grid grid-cols-4 font-bold text-primary mb-4 text-center">
         <span>{orderId}</span>
-        <span>{quantity}</span>
+        <span>{status}</span>
         <span>{date}</span>
         <span>{view}</span>
       </div>
@@ -23,22 +23,23 @@ export default function OrdersInfo({
           <div className="flex items-center justify-center">
             <Spinner />
           </div>
+        ) : orders.length === 0 ? (
+          <div className="text-center text-3xl text-accent">
+            No Products Found
+          </div>
         ) : (
           <div>
             {orders?.map((order) => {
               return (
                 <div
                   key={order.id}
-                  className="grid grid-cols-1 md:grid-cols-4 items-center py-3 bg-gray-100 text-center rounded-lg"
+                  className="grid grid-cols-1 md:grid-cols-4 items-center py-3 bg-gray-100 text-center rounded-lg mb-3"
                 >
                   <span>{order.id}</span>
                   <span>{order.status}</span>
                   <span>{order.createdAt.slice(0, 10)}</span>
                   <Link href={`/${locale}/orders/${order.id}`}>
-                    <span
-                      className="flex items-center justify-center"
-                      onClick={() => setViewOrder(order)}
-                    >
+                    <span className="flex items-center justify-center">
                       {locale === "ar" ? (
                         <ArrowBigLeft className="cursor-pointer  hover:text-primary" />
                       ) : (

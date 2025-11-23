@@ -102,7 +102,7 @@
         "sectionHeader" : "My Orders",
         "orderInfo" : {
             "orderId" : "Order Id",
-            "quantity" : "Quantity",
+            "status" : "Status",
             "date" : "Date",
             "view" : "View",
             "product" : "Product"

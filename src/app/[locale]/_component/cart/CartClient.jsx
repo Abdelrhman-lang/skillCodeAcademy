@@ -12,8 +12,14 @@ import { UserContext } from "../../../../context/UserContext";
 import Spinner from "../../../../components/ui/Spinner";
 
 export default function CartClient({ viewMyCart, clearCartLabel }) {
-  const { userCart, fetchUserProducts, deleteFromCart, clearCart, loading } =
-    useContext(CartContext);
+  const {
+    userCart,
+    fetchUserProducts,
+    deleteFromCart,
+    clearCart,
+    loading,
+    totalPrice,
+  } = useContext(CartContext);
   const { userData, fetchUser } = useContext(UserContext);
   const { user } = useUser();
   const { isCartOpen, setIsCartOpen } = useContext(CartButtonContext);
@@ -27,11 +33,11 @@ export default function CartClient({ viewMyCart, clearCartLabel }) {
 
   useEffect(() => {
     if (user) {
-      fetchUserProducts(userData?.id);
+      fetchUserProducts(userData?.email);
     } else {
       return;
     }
-  }, [userData?.id]);
+  }, [userData?.email]);
 
   return (
     user && (
@@ -72,38 +78,38 @@ export default function CartClient({ viewMyCart, clearCartLabel }) {
                 <Spinner />
               </div>
             ) : (
-              <div>
+              <div className="border-b border-black pb-3">
                 {userCart.map((course) => {
                   return (
                     <li
-                      key={course.cartId}
-                      className="flex items-center justify-between"
+                      key={course.id}
+                      className="flex items-center justify-between mb-2.5"
                     >
                       <div className="flex items-center gap-4">
                         <img
-                          src={course.productImage}
+                          src={course.image}
                           alt="cousre-img"
                           className="size-16 rounded-sm object-cover"
                         />
 
                         <div>
                           <h3 className="text-sm text-primary">
-                            {course.productTitle}
+                            {course.name}
                           </h3>
 
                           <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
-                            <div className="flex items-center gap-2">
+                            {/* <div className="flex items-center gap-2">
                               <dt className="inline text-gray-500">
                                 Category:
                               </dt>
                               <dd className="inline">
                                 {course.productCategory}
                               </dd>
-                            </div>
+                            </div> */}
 
                             <div className="flex items-center gap-2">
                               <dt className="inline text-gray-500">Price:</dt>
-                              <dd className="inline">${course.productPrice}</dd>
+                              <dd className="inline">${course.price}</dd>
                             </div>
                           </dl>
                         </div>
@@ -111,7 +117,9 @@ export default function CartClient({ viewMyCart, clearCartLabel }) {
 
                       <div
                         className="cursor-pointer"
-                        onClick={() => deleteFromCart(course.cartId)}
+                        onClick={() =>
+                          deleteFromCart(course.productId, userData?.email)
+                        }
                       >
                         <Trash className="text-red-500 text-sm" />
                       </div>
@@ -121,7 +129,10 @@ export default function CartClient({ viewMyCart, clearCartLabel }) {
               </div>
             )}
           </ul>
-
+          <div className="flex items-center justify-between">
+            <p className="font-bold">Total Price:</p>
+            <p>${totalPrice}</p>
+          </div>
           <div className="space-y-4 text-center">
             <Link
               href={`/${locale}/${Routes.CART}`}

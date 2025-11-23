@@ -14,34 +14,34 @@ import Swal from "sweetalert2";
 import { UserContext } from "../../../../../context/UserContext";
 
 export default function ProductInfo({ product }) {
-  const { addToCart, fetchUserProducts, userCart } = useContext(CartContext);
-  const { userData, fetchUser } = useContext(UserContext);
-  const { user } = useUser();
+  const { addToCart } = useContext(CartContext);
+  // const { userData, fetchUser } = useContext(UserContext);
+  // const { user } = useUser();
 
-  const handelAddToCart = async () => {
-    if (!userData) {
-      return;
-    } else if (userCart.some((item) => item.productId === product.id)) {
-      Swal.fire({
-        icon: "warning",
-        title: "Course Already in Cart",
-        text: "This course is already in your cart!",
-        confirmButtonText: "OK",
-      });
-      return;
-    } else {
-      const data = {
-        userId: userData?.id,
-        productId: product.id,
-      };
-      await addToCart(data);
-      fetchUserProducts(userData?.id);
-    }
-  };
-  useEffect(() => {
-    if (!user) return;
-    fetchUser(user?.primaryEmailAddress?.emailAddress);
-  }, [user]);
+  // const handelAddToCart = async () => {
+  //   if (!userData) {
+  //     return;
+  //   } else if (userCart.some((item) => item.productId === product.id)) {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       title: "Course Already in Cart",
+  //       text: "This course is already in your cart!",
+  //       confirmButtonText: "OK",
+  //     });
+  //     return;
+  //   } else {
+  //     const data = {
+  //       userId: userData?.id,
+  //       productId: product.id,
+  //     };
+  //     await addToCart(data);
+  //     fetchUserProducts(userData?.id);
+  //   }
+  // };
+  // useEffect(() => {
+  //   if (!user) return;
+  //   fetchUser(user?.primaryEmailAddress?.emailAddress);
+  // }, [user]);
   return (
     <div>
       <h3 className="text-2xl font-bold">{product.title}</h3>
@@ -63,7 +63,7 @@ export default function ProductInfo({ product }) {
       <div className="mt-5">
         <Button
           className={"w-full py-6 cursor-pointer"}
-          onClick={() => handelAddToCart()}
+          onClick={() => addToCart(product)}
         >
           Add To Cart
         </Button>

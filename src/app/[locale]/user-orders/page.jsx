@@ -17,7 +17,7 @@ export default async function UserOrders() {
         <div className="mt-10">
           <UserOrdersDisplay
             orderId={userOrders.orderInfo.orderId}
-            quantity={userOrders.orderInfo.quantity}
+            status={userOrders.orderInfo.status}
             date={userOrders.orderInfo.date}
             view={userOrders.orderInfo.view}
             locale={locale}
